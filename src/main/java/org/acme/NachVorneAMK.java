@@ -1,7 +1,6 @@
 package org.acme;
 
-
-    import org.apache.http.HttpEntity;
+import org.apache.http.HttpEntity;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
@@ -9,7 +8,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-
 
 public class NachVorneAMK {
 
@@ -30,32 +28,37 @@ public class NachVorneAMK {
             String jsonPayload = String.format("[%s, %s, %s]", vx, vy, omega);
 
             while (true) {
-                // create the HTTP PUT request
-                HttpPut putRequest = new HttpPut(apiUrl);
-                putRequest.setHeader("Content-Type", "application/json");
-                putRequest.setEntity(new StringEntity(jsonPayload));
+                try {
+                    // create the HTTP PUT request
+                    HttpPut putRequest = new HttpPut(apiUrl);
+                    putRequest.setHeader("Content-Type", "application/json");
+                    putRequest.setEntity(new StringEntity(jsonPayload));
 
-                System.out.println("Executing request to " + apiUrl);
+                    System.out.println("Executing request to " + apiUrl);
 
-                // execute the request
-                CloseableHttpResponse httpResponse = httpclient.execute(putRequest);
-                HttpEntity entity = httpResponse.getEntity();
+                    // execute the request
+                    CloseableHttpResponse httpResponse = httpclient.execute(putRequest);
+                    HttpEntity entity = httpResponse.getEntity();
 
-                System.out.println("----------------------------------------");
-                System.out.println(httpResponse.getStatusLine());
-                Header[] headers = httpResponse.getAllHeaders();
-                for (Header header : headers) {
-                    System.out.println(header);
+                    System.out.println("----------------------------------------");
+                    System.out.println(httpResponse.getStatusLine());
+                    Header[] headers = httpResponse.getAllHeaders();
+                    for (Header header : headers) {
+                        System.out.println(header);
+                    }
+                    System.out.println("----------------------------------------");
+
+                    // print the response body if available
+                    if (entity != null) {
+                        System.out.println(EntityUtils.toString(entity));
+                    }
+
+                    // sleep for a short duration (e.g., 200 milliseconds) before sending the next request
+                    Thread.sleep(200);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                System.out.println("----------------------------------------");
-
-                // print the response body if available
-                if (entity != null) {
-                    System.out.println(EntityUtils.toString(entity));
-                }
-
-                // sleep for a short duration (e.g., 200 milliseconds) before sending the next request
-                Thread.sleep(200);
             }
 
         } catch (Exception e) {
@@ -63,5 +66,3 @@ public class NachVorneAMK {
         }
     }
 }
-
-    
