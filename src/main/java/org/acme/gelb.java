@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class Lars {
+public class gelb {
     static {
         System.load("C:\\Users\\Atilla Coskun\\Documents\\ADV\\opencv\\build\\java\\x64\\opencv_java490.dll");
     }
@@ -52,30 +52,22 @@ public class Lars {
     private static void processAndDisplayImage(Mat image) {
         Mat hsvImage = new Mat();
         Imgproc.cvtColor(image, hsvImage, Imgproc.COLOR_BGR2HSV);
-
-        Scalar lowerCyan = new Scalar(80, 50, 50);
-        Scalar upperCyan = new Scalar(100, 255, 255);
-        Scalar lowerRed = new Scalar(0, 100, 100);
-        Scalar upperRed = new Scalar(255, 200, 200);
-
-        Mat maskCyan = new Mat();
-        Mat maskRed = new Mat();
-        Core.inRange(hsvImage, lowerCyan, upperCyan, maskCyan);
-        Core.inRange(hsvImage, lowerRed, upperRed, maskRed);
-
-        Mat cyanObjects = new Mat();
-        Mat redObjects = new Mat();
-        Mat allObjects = new Mat();
-        Core.bitwise_and(image, image, cyanObjects, maskCyan);
-        Core.bitwise_and(image, image, redObjects, maskRed);
-        Core.bitwise_and(image, image, allObjects, new Mat(maskCyan.size(), maskCyan.type(), new Scalar(255)));
-
+    
+        Scalar lowerYellow = new Scalar(20, 100, 100); // Untere Grenze für Gelb im HSV-Farbraum
+        Scalar upperYellow = new Scalar(30, 255, 255); // Obere Grenze für Gelb im HSV-Farbraum
+    
+        Mat maskYellow = new Mat();
+        Core.inRange(hsvImage, lowerYellow, upperYellow, maskYellow);
+    
+        Mat yellowObjects = new Mat();
+        Core.bitwise_and(image, image, yellowObjects, maskYellow);
+    
         displayImage("Original", image);
-        displayImage("Nur Cyan Objekte", cyanObjects);
-        displayImage("Rot", redObjects);
-        displayImage("Red and Blue", allObjects);
+        displayImage("Nur Gelbe Objekte", yellowObjects);
     }
-
+    
+    
+    
     private static void displayImage(String windowName, Mat image) {
         String imagePath = "C:\\Users\\Atilla Coskun\\Documents\\ADV\\Bilder\\" + windowName + ".jpg";
         Imgcodecs.imwrite(imagePath, image);
