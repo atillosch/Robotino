@@ -10,7 +10,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-public class RobotinoMoveForward {
+public class RobotinoMoveRational {
 
     public static void main(String[] args) {
         try {
@@ -21,9 +21,9 @@ public class RobotinoMoveForward {
             String apiUrl = "http://192.168.0.1/data/omnidrive";
 
             // specify the velocity values for forward motion
-            double vx = 0.5;  // x-velocity in m/s
+            double vx = 0;  // x-velocity in m/s
             double vy = 0;  // y-velocity in m/s
-            double omega = 0;  // rotational velocity in rad/s
+            double omega = 1;  // rotational velocity in rad/s
 
             // create the JSON payload
             String jsonPayload = String.format("[%s, %s, %s]", vx, vy, omega);
